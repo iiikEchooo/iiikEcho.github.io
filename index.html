@@ -91,7 +91,38 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        
+        <p>这应该算是第四次重启博客了，就这样吧。</p>
+<p>虽然好久都没有用hexo，但想着以前也折腾了很久，估计一下就能重新上线，结果还是花了不少功夫才解决上线的整个流程，虽然都是些小问题，但这些东西真的很耗费精力。</p>
+<p>这次开始就不打算每次记录很多东西了，经常写一些小结然后整合在一起，这样的形式可能比较好，这次就记录一下重新上线hexo博客的过程。</p>
+<hr>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">npm hexo-cli -g</span><br><span class="line"></span><br><span class="line">hexo init blog</span><br></pre></td></tr></table></figure>
+
+<p>因为很早就安装了hexo的命令行工具，所以这次并没有执行<code>npm hexo-cli -g</code>，但无论怎么样都无法安装成功，开始也没有耐心看报错，但今天想着总是要解决的，所以仔细看了一下，发现是以前npm的淘宝镜像证书过期了的报错，所以就想着不用淘宝镜像地址了。</p>
+<p>说起来以前会要用到淘宝镜像地址还是因为以前在公司网络环境的问题，现在大多数时间都在家，网络也不会波动的很厉害了，所以这次干脆就研究了一下怎么取消这个玩意儿。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">npm config get registry</span><br><span class="line"></span><br><span class="line">npm config set registry</span><br><span class="line"></span><br><span class="line">npm config delte</span><br><span class="line"></span><br><span class="line">npm config edit</span><br></pre></td></tr></table></figure>
+
+<p>基本上就用到了上面几个命令，因为没有仔细观察，所以并不知道具体是哪一条开始就解决了问题，关于这个点以后做npm相关的学习研究或者遇到npm的问题之后再一起总结，这里留个hook。</p>
+<p>解决问题之后就可以顺利使用<code>hexo init blog</code>初始化博客文件夹了。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">npm i</span><br><span class="line"></span><br><span class="line">hexo server</span><br><span class="line"></span><br><span class="line">hexo new &quot;ReStart&quot;</span><br></pre></td></tr></table></figure>
+
+<p>接下来的几步基本也没有出现什么问题，安装依赖包，启hexo的博客服务，新建了一个新的文章。</p>
+<p>之后就是将博客上传到github上，用github.io的服务免费上线自己的博客。</p>
+<p>因为之前已经建好符合使用github.io规则的仓库了，所以直接设定一下上传所需要的配置就可以了。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git config --list</span><br><span class="line"></span><br><span class="line">ssh-keygen -t rsa -C &quot;1581740452@qq.com&quot;</span><br></pre></td></tr></table></figure>
+
+<p>显示看了一下git的配置信息，用户名和邮箱都没有问题，然后根据在网上看到的教程设置了一下ssh。</p>
+<p>这之后就是去到hexo博客文件夹的根目录下找到<code>_config.yml</code>这个文件，在里面找到<code>deploy</code>这个配置项进行配置。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">deploy:</span><br><span class="line">  type: &#x27;git&#x27;</span><br><span class="line">  repo: &#x27;git@github.com:iiikEchooo/iiikEchooo.github.io.git&#x27;</span><br><span class="line">  branch: &#x27;master&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>然后需要安装一个部署上传用的工具就可以进行上传了。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">npm i hexo-deployer-git --save</span><br><span class="line"></span><br><span class="line">hexo d -g</span><br></pre></td></tr></table></figure>
+
+<p>命令执行完之后我去查看了iiikEchooo.github.io，但并没有显示，不确定是不是因为字母大小写之类的原因不符合github.io的规则，又或者是需要使用用户名而不是账号名作为仓库的前缀，改了几次发现没有用就改回原本的iiikEchooo.github.io了。</p>
+<p>吃完饭再进去页面发现可以显示了，看来是延迟问题，万事大吉。</p>
+<p>不过这个过程中原本以为git上传会出现问题的，结果没有问题，毕竟之前上传gitee就出现过问题，也不知道ssh的命令是否在这之中起到了什么作用，以后也需要了解一下ssh这方面的东西。</p>
+<p>总而言之，虽然花了点功夫，但也不多，最后也是成功上线了。</p>
+<p>后面偶尔督促自己更新就好了，感觉自己脑子里面的东西还是要用上才好，不然每次都需要重新刷新一遍，这个过程着实让人难顶。</p>
+
       
     </div>
     <footer class="article-footer">
